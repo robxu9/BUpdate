@@ -1,0 +1,38 @@
+name: BUpdate
+main: com.xu_robert.BUpdate.BUpdate
+version: 0.5
+author: Robert Xu
+website: http://rxu.tumblr.com/
+description: |
+  The plugin shows outdated plugins.
+  You can see all your plugins, blacklist ones you don't want to update, and update new ones.
+database: false
+commands:
+  u2d:
+    description: display new updates and more
+    usage: |
+      /<command> - Shows outdated plugin(s)
+      /<command> unsupported - Shows unsupported plugins
+      /<command> ignore <PluginName> - Add/Remove a plugin from the blacklist
+      /<command> ignore list - List all ignored plugins
+      /<command> update - Perform an upgrade of ALL upgradable plugins.
+      /<command> update <PluginName> - Perform an upgrade of a certain plugin.
+      /<command> reload <PluginName> - Reload the plugin e.g. after a update
+      /<command> help - Display the help page
+permissions:
+  BUpdate.*:
+    description: Gives access to all BUpdate commands
+    default: op
+    children:
+      BUpdate.usage: true
+      BUpdate.ignore: true
+      BUpdate.update: true
+      BUpdate.reload: true
+  BUpdate.usage:
+    description: Allows you to list outdated/unsupported plugins
+  BUpdate.ignore:
+    description: Add/Remove a plugin from the blacklist
+  BUpdate.update:
+    description: Allows you to update single plugins
+  BUpdate.reload:
+    description: Allows you to reload single plugins
