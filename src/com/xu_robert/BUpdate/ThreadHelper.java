@@ -114,8 +114,8 @@ public class ThreadHelper {
 	
 	public void sendTo(Player player, String color, String string) {
 		if (player == null) {
-			//if (!string.equalsIgnoreCase(""))
-				console.sendMessage("[BUpdate]"+ChatColor.valueOf(color)+string);
+			if (!string.equalsIgnoreCase(""))
+				console.sendMessage("[BUpdate] "+string);
 		} else {
 			player.sendMessage(ChatColor.valueOf(color)+string);
 		}
