@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.xu_robert.BUpdate.BUpdate;
 import com.xu_robert.BUpdate.ThreadHelper;
 import com.xu_robert.BUpdate.Async.Downloader;
 import com.xu_robert.BUpdate.BUpdateYAML;;
@@ -78,10 +80,10 @@ public class Overview extends Thread{
 					th.sendTo(player, "GREEN", "You do not have any unsupported plugins.");
 			} else if (action.equalsIgnoreCase("updateall")) {
 				if (u2d){
-					th.sendTo(player, "GREEN", "The following plugins will be upgraded:");
+					th.sendTo(player, "YELLOW", "The following plugins will be upgraded:");
 					supported = supportedPlugins.split(";");
 					for(int i = 0; supported.length > i; i++)
-						th.sendTo(player, "WHITE", supported[i]);
+						th.sendTo(player, "YELLOW", supported[i]);
 					mainsupported = mainsupportedPlugins.split(";");
 					for(int i = 0; mainsupported.length > i; i++){
 						for (int j=0; j<plugins.length; j++){
@@ -112,10 +114,18 @@ public class Overview extends Thread{
 				}			
 			}
 		} catch (IOException e) {
-			if (e.toString().matches(".*Connection\\stimed\\sout.*"))
-				th.sendTo(player, "RED", "(The database is currently not available...)");
-			else
-				th.sendTo(player, "GRAY", "(Something went wrong. See the console for more output.)");
+			if (e.toString().matches(".*Connection\\stimed\\sout.*")){
+				if (player != null)
+					th.sendTo(player, "RED", "(The database is currently not available...)");
+				else
+					th.console.sendMessage(ChatColor.RED + "(The database is currently not available...)");
+			}
+			else{
+				if (player != null)
+					th.sendTo(player, "GRAY", "(Something went wrong. See the console for more output.)");
+				else
+					th.console.sendMessage("(Something went wrong. See the console for more output.)");
+			}
 		}
 	}
 
@@ -193,10 +203,14 @@ public class Overview extends Thread{
 							}
 						}
 					} catch (NullPointerException e){
-						th.sendTo(player, "RED", "Seems that a plugin file is corrupt. You should notify the BUpdate admin.");
-						e.printStackTrace();
-						th.sendTo(player, "RED", "Marking "+name+" as unsupported for now.");
-						unsupported+=plugins[i]+";";
+						if (player!=null){
+							th.sendTo(player, "RED", "Seems that a plugin file is corrupt. You should notify the BUpdate admin.");
+							e.printStackTrace();
+							th.sendTo(player, "RED", "Marking "+name+" as unsupported for now.");
+							unsupported+=plugins[i]+";";
+							th.sendTo(player, "RED", "Due to a chain reaction possibility, we're stopping.");
+						}
+						return false;
 					}
 				}
 			}

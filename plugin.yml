@@ -1,8 +1,8 @@
 name: BUpdate
 main: com.xu_robert.BUpdate.BUpdate
-version: 0.5
+version: 0.5.1
 author: Robert Xu
-website: http://rxu.tumblr.com/
+website: http://rxu.lincomlinux.org/
 description: |
   The plugin shows outdated plugins.
   You can see all your plugins, blacklist ones you don't want to update, and update new ones.
@@ -15,7 +15,7 @@ commands:
       /<command> unsupported - Shows unsupported plugins
       /<command> ignore <PluginName> - Add/Remove a plugin from the blacklist
       /<command> ignore list - List all ignored plugins
-      /<command> update - Perform an upgrade of ALL upgradable plugins.
+      /<command> update - Perform an upgrade of ALL upgradable plugins on reboot of server.
       /<command> update <PluginName> - Perform an upgrade of a certain plugin.
       /<command> reload <PluginName> - Reload the plugin e.g. after a update
       /<command> help - Display the help page

@@ -55,6 +55,8 @@ public class BUpdate extends JavaPlugin {
 	public static PermissionHandler permissionHandler = null;
 	public static PermissionManager permissionExHandler = null;
 	
+	private boolean updateOnReboot = false;
+	
 	private String[] randomLoading = {"Loading package lists...","Grabbing from Github...","Refreshing...",
 			"Watching Lucky Star to pass the time...","Being lazy...","Sweeping the floor...",
 			"Thinking of something naughty...","Flirting with the CPU...","NYAN CATTTTing...",
@@ -67,6 +69,18 @@ public class BUpdate extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		try {
+			if (updateOnReboot){
+				th.console.sendMessage("[BUpdate] You requested an update of plugins on reboot. Now doing that...");
+				th.updatetmp.createNewFile();
+				this.getServer().getScheduler().scheduleAsyncDelayedTask(this,
+						new Overview(null,
+								this.getServer().getPluginManager().getPlugins(),
+								"updateall"));
+				if (th.updatetmp.delete())
+					th.console.sendMessage("[BUpdate] Completed.");
+				else
+					th.console.sendMessage("[BUpdate] Completed but there's a stale update.tmp file...");
+			}
 		th.console.sendMessage(ChatColor.RED+"[BUpdate] version " + this.getDescription().getVersion() + " disabled.");
 		} catch (Exception e){
 			System.err.println("[BUpdate] Disabled, but couldn't show disabled message normally.");
@@ -77,7 +91,11 @@ public class BUpdate extends JavaPlugin {
 	public void onEnable() {		
 		PluginManager pm = this.getServer().getPluginManager();	
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
-		setupBUpdate();
+		try {
+			setupBUpdate();
+		} catch (NullPointerException e){
+			// do nothing
+		}
 		th.console.sendMessage(ChatColor.GREEN+"[BUpdate] version " + this.getDescription().getVersion() + " enabled.");
 	}
 		
@@ -139,10 +157,9 @@ public class BUpdate extends JavaPlugin {
 						return false;
 					// update all supported plugins
 					th.sendTo(player, "GREEN", "No plugin specified, assuming all available upgrades:");
-					this.getServer().getScheduler().scheduleAsyncDelayedTask(this,
-							new Overview(player,
-									this.getServer().getPluginManager().getPlugins(),
-									"updateall"));
+					th.sendTo(player, "YELLOW", "Will start updating plugins on reload.");
+					th.sendTo(player, "YELLOW", "To make it happen now, use /reload.");
+					updateOnReboot=true;
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("unsupported")) {
@@ -217,6 +234,10 @@ public class BUpdate extends JavaPlugin {
 				th.console.sendMessage("[BUpdate][WARN] Creating YAML files directory failed!");
 				onDisable();
 			}
+		if (th.updatetmp.exists()){
+			th.updatetmp.delete();
+			th.console.sendMessage("[BUpdate][WARN] Found stale update.tmp, deleting...");
+		}
 		
 		/*
 		if (!th.token.exists()) {

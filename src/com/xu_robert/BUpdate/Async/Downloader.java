@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -56,18 +57,18 @@ public class Downloader extends Thread{
 	public void run() {
 		try {
 			if (update(plugin)) {
-				th.sendTo(player, "GREEN", "The plugin "+plugin.getDescription().getName()+" was successfully updated :)");
+					th.sendTo(player, "GREEN", "The plugin "+plugin.getDescription().getName()+" was successfully updated :)");
 			} else {
-				th.sendTo(player, "RED", "The plugin "+plugin.getDescription().getName()+" update failed!");
+					th.sendTo(player, "RED", "The plugin "+plugin.getDescription().getName()+" update failed!");
 			}
 		} catch (IllegalStateException e) {
-			th.sendTo(player, "GRAY", "(Something went wrong)");
+				th.sendTo(player, "GRAY", "(Something went wrong)");
 		} catch (MalformedURLException e) {
-			th.sendTo(player, "GRAY", "(Something went wrong)");
+				th.sendTo(player, "GRAY", "(Something went wrong)");
 		} catch (ProtocolException e) {
-			th.sendTo(player, "GRAY", "(Something went wrong)");
+				th.sendTo(player, "GRAY", "(Something went wrong)");
 		} catch (IOException e) {
-			th.sendTo(player, "GRAY", "(Something went wrong)");
+				th.sendTo(player, "GRAY", "(Something went wrong)");
 		}
 	}
 	

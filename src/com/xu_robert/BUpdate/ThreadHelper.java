@@ -56,6 +56,8 @@ public class ThreadHelper {
 	public File backupFolder = new File(cwd +"/plugins/BUpdate/backup/");
 	// yaml folder
 	public File yamlFolder = new File("plugins" + File.separator + "BUpdate" + File.separator + "yamlfiles");
+	// update tmp file
+	public File updatetmp = new File ("plugins" + File.separator + "BUpdate" + File.separator + "update.tmp");
 	
 	/* only used for tokens and something
 	 * in Downloader... and we don't need this...
@@ -83,7 +85,7 @@ public class ThreadHelper {
 		sendTo(player, "RED", "BUpdate - Helps with updating your server.");
 		sendTo(player, "WHITE", "");
 		sendTo(player, "GOLD", "/u2d - Shows outdated plugins");
-		sendTo(player, "GOLD", "/u2d update - Update all upgradable plugins");
+		sendTo(player, "GOLD", "/u2d update - Update all upgradable plugins on next reload");
 		sendTo(player, "GOLD", "/u2d update <PluginName> - Update the plugin if there is following tag behind the name '(L)'");
 		sendTo(player, "GOLD", "/u2d reload <PluginName> - Reload the plugin e.g. after a update");
 		sendTo(player, "GOLD", "/u2d ignore <PluginName> - Add/Remove a plugin from the blacklist");
@@ -112,8 +114,8 @@ public class ThreadHelper {
 	
 	public void sendTo(Player player, String color, String string) {
 		if (player == null) {
-			if (!string.equalsIgnoreCase(""))
-				console.sendMessage(ChatColor.valueOf(color)+string);
+			//if (!string.equalsIgnoreCase(""))
+				console.sendMessage("[BUpdate]"+ChatColor.valueOf(color)+string);
 		} else {
 			player.sendMessage(ChatColor.valueOf(color)+string);
 		}
